@@ -1,5 +1,4 @@
-import 'package:bloc_connectivity/bloc/internet_bloc/internet_bloc.dart';
-import 'package:bloc_connectivity/bloc/internet_bloc/internet_state.dart';
+import 'package:bloc_connectivity/cubit/internet_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,36 +15,32 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SafeArea(
           child: Center(
-              child: BlocConsumer<InternetBloc, InetrnetState>(
+              child: BlocConsumer<InternetCubit, InternetState>(
         listener: (context, state) {
-          if (state is InternetGainedState) {
+          if (state == InternetState.Gained) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text(
                 "Internet Connected Successfully",
-                style: TextStyle(
-                  color: Colors.green,
-                ),
               ),
+              backgroundColor: Colors.green,
             ));
-          } else if (state is InternetLostState) {
+          } else if (state == InternetState.Lost) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text(
                   "Internet Lost........",
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
                 ),
+                backgroundColor: Colors.red,
               ),
             );
           }
         },
         builder: ((context, state) {
-          return BlocBuilder<InternetBloc, InetrnetState>(
+          return BlocBuilder<InternetCubit, InternetState>(
               builder: (context, state) {
-            if (state is InternetGainedState) {
+            if (state == InternetState.Gained) {
               return const Text("Internet Conneted....");
-            } else if (state is InternetLostState) {
+            } else if (state == InternetState.Lost) {
               return const Text("Internet No Connected....");
             } else {
               return const Text("Loading....");
